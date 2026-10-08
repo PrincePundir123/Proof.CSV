@@ -1,0 +1,21 @@
+[Unit]
+Description=ProofCSV web application and Vultr agent orchestrator
+After=network-online.target docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/proofcsv/proofcsv
+Environment=DOCKER_HOST=unix://%t/docker.sock
+ExecStart=/usr/bin/node --env-file=/home/proofcsv/proofcsv/.env /home/proofcsv/proofcsv/server/index.js
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=330
+NoNewPrivileges=true
+PrivateTmp=true
+UMask=0077
+LimitNOFILE=1024
+MemoryMax=512M
+
+[Install]
+WantedBy=default.target
